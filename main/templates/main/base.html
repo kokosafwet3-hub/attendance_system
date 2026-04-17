@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}نظام تسجيل الحضور{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+</head>
+
+<body>
+
+<header class="header">
+    <div class="header-container">
+
+        <!-- اللوجو على الشمال -->
+        <div class="logo-box">
+            <img src="{% static 'main/images/logo.png' %}" class="logo">
+        </div>
+
+        <!-- العنوان في النص -->
+        <h1 class="header-title">نظام تسجيل الحضور</h1>
+
+    </div>
+</header>
+
+
+<main class="container">
+    {% block content %}{% endblock %}
+</main>
+
+</body>
+</html>

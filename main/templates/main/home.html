@@ -1,0 +1,24 @@
+{% extends 'main/base.html' %}
+
+{% block title %}الرئيسية{% endblock %}
+
+{% block content %}
+
+<div class="home-center">
+
+   <h2 style="margin-bottom:10px;">👋مرحبًا بك </h2>
+
+   <a href="{% url 'select_level' %}"
+      style="display:inline-block;
+             padding:18px 30px;
+             background-color:#1e4a7a;
+             color:white;
+             text-decoration:none;
+             border-radius:8px;
+             font-size:1.2rem;">
+        عرض المحاضرات
+    </a>
+
+</div>
+
+{% endblock %}

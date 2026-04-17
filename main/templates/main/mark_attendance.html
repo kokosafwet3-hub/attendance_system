@@ -1,0 +1,38 @@
+{% extends 'main/base.html' %}
+
+{% block title %}تسجيل الحضور{% endblock %}
+
+{% block content %}
+<div style="min-height: 80vh; display:flex; justify-content:center; align-items:center; padding:20px;">
+    <div style="width:100%; max-width:400px; text-align:center;">
+
+        <h2 style="font-size:2rem; font-weight:bold; margin-bottom:30px;">تسجيل الحضور</h2>
+
+        {% if messages %}
+            <div style="margin-bottom:20px;">
+                {% for message in messages %}
+                    <div style="padding:10px; border-radius:6px; margin-bottom:10px; 
+                        {% if message.tags == 'success' %}background-color:#d4edda; color:#155724;
+                        {% elif message.tags == 'error' %}background-color:#f8d7da; color:#721c24;
+                        {% elif message.tags == 'warning' %}background-color:#fff3cd; color:#856404;{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="POST" style="background:white; padding:30px; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
+            {% csrf_token %}
+            <div style="margin-bottom:20px;">
+                <input type="text" name="student_id" id="student_id" placeholder="ادخل كودك" 
+                       style="width:100%; text-align:center; font-size:2.5rem; padding:15px; border:1px solid #ccc; border-radius:8px; outline:none;">
+            </div>
+
+            <button type="submit" 
+                    style="width:100%; padding:15px; background-color:#1e4a7a; color:white; font-size:1.2rem; border:none; border-radius:8px; cursor:pointer;">
+                تسجيل الحضور
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

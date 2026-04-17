@@ -1,0 +1,13 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<div class="lecture-detail-page">
+    <h1>{{ lecture.name }}</h1>
+
+    <p>{{ lecture.date }}</p>
+    <p>{{ lecture.start_time }} - {{ lecture.end_time }}</p>
+    <p><strong></strong> {{ lecture.doctor }}</p>
+    <p><strong></strong> {{ lecture.level }}</p>
+    <a class="btn" href="{% url 'generate_qr' lecture.id %}">عرض QR Code</a>
+</div>
+{% endblock %}

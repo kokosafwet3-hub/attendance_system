@@ -1,0 +1,26 @@
+{% extends 'main/base.html' %}
+
+{% block title %}المحاضرات{% endblock %}
+
+{% block content %}
+
+<h2 class="page-title">كل المحاضرات</h2>
+
+<div class="lectures-list">
+    {% for lecture in lectures %}
+        <div class="lecture-card">
+            <h3>{{ lecture.name }}</h3>
+            <p>{{ lecture.date }}</p>
+            <p>{{ lecture.start_time }} - {{ lecture.end_time }}</p>
+            <p>{{ lecture.doctor }}</p>
+            <p>{{ lecture.level }}</p>
+            <a class="btn" href="{% url 'lecture_detail' lecture.id %}">
+                دخول المحاضرة
+            </a>
+        </div>
+    {% empty %}
+        <p class="empty-text">لا توجد محاضرات</p>
+    {% endfor %}
+</div>
+
+{% endblock %}
