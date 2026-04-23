@@ -1,28 +1,22 @@
 {% extends 'main/base.html' %}
 
+{% block title %}اختيار الفرقة{% endblock %}
+
+{% block header_buttons %}
+<a href="{% url 'home' %}" class="nav-btn">Home</a>
+<a href="{% url 'logout' %}" class="nav-btn">Logout</a>
+{% endblock %}
+
 {% block content %}
-<div style="text-align:center; padding:40px;">
 
-    <h2 style="margin-bottom:30px;">اختار الفرقة</h2>
-
-    <a href="{% url 'lectures_by_level' 1 %}" class="btn">الفرقة الأولى</a>
-    <a href="{% url 'lectures_by_level' 2 %}" class="btn">الفرقة الثانية</a>
-    <a href="{% url 'lectures_by_level' 3 %}" class="btn">الفرقة الثالثة</a>
-    <a href="{% url 'lectures_by_level' 4 %}" class="btn">الفرقة الرابعة</a>
-
+<div class="level-page">
+    <h2>اختار الفرقة</h2>
+    <div class="level-buttons">
+        <a href="{% url 'lectures_by_level' 1 %}" class="btn">الفرقة الأولى</a>
+        <a href="{% url 'lectures_by_level' 2 %}" class="btn">الفرقة الثانية</a>
+        <a href="{% url 'lectures_by_level' 3 %}" class="btn">الفرقة الثالثة</a>
+        <a href="{% url 'lectures_by_level' 4 %}" class="btn">الفرقة الرابعة</a>
+    </div>
 </div>
-
-<style>
-.btn {
-    display:block;
-    margin:10px auto;
-    width:200px;
-    padding:15px;
-    background:#1e4a7a;
-    color:white;
-    text-decoration:none;
-    border-radius:8px;
-}
-</style>
 
 {% endblock %}

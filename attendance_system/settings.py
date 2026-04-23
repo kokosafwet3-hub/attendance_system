@@ -1,4 +1,5 @@
 from pathlib import Path
+LOGIN_URL = 'login'
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -6,15 +7,16 @@ SECRET_KEY = 'django-insecure-8+u4#g8z!h!&^p_j8_1tzrc90k+dzb7wy59*#pmm2p(cytdn1z
 DEBUG = True
 ALLOWED_HOSTS = ['*']
 
-# التطبيقات
+
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'main',  # تطبيقنا
+    'main',  
 ]
 
 # Middleware
@@ -34,7 +36,7 @@ ROOT_URLCONF = 'attendance_system.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'main' / 'templates'],  # فولدر القوالب
+        'DIRS': [BASE_DIR / 'main' / 'templates'],  
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,15 +70,70 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',},
 ]
 
-# اللغة والمنطقة الزمنية
-LANGUAGE_CODE = 'ar'  # بدل en-us → عشان كل الموقع RTL
-TIME_ZONE = 'Africa/Cairo'  # أو حسب منطقتك
+
+LANGUAGE_CODE = 'ar'  
+TIME_ZONE = 'Africa/Cairo'  
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-# ملفات ثابتة
+
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'main' / 'static']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+JAZZMIN_SETTINGS = {
+    "site_title": "نظام الحضور",
+    "site_header": "نظام تسجيل الحضور",
+    "site_brand": "MCI",
+    "welcome_sign": "أهلاً بك في لوحة التحكم",
+    "copyright": "MCI Attendance System",
+    "custom_css": "main/css/custom.css",
+
+    # أيقونات للقوائم
+    "icons": {
+        "main.Doctor": "fas fa-user-md",
+        "main.Student": "fas fa-user-graduate",
+        "main.Lecture": "fas fa-chalkboard-teacher",
+        "main.Attendance": "fas fa-clipboard-check",
+        "main.Level": "fas fa-layer-group",
+        "auth.User": "fas fa-users",
+    },
+
+    # ترتيب القوائم
+    "order_with_respect_to": [
+        "main.Lecture",
+        "main.Doctor",
+        "main.Student",
+        "main.Attendance",
+        "main.Level",
+    ],
+    
+     "topmenu_links": [
+     {"name": "🌐 عرض الموقع", "url": "/", "new_window": True},
+     {"name": "🗑️ مسح الإجراءات", "url": "/admin/clear-recent/", "new_window": False},
+    ],
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "theme": "darkly",
+    "dark_mode_theme": "darkly",
+
+    "navbar_small_text": True,
+    "footer_small_text": True,
+    "body_small_text": True,
+    "brand_small_text": True,
+
+    "brand_colour": "navbar-primary",
+    "accent": "accent-primary",
+    "navbar": "navbar-dark",
+    "sidebar": "sidebar-dark-primary",
+
+    "sidebar_nav_small_text": True,
+    "sidebar_disable_expand": True,
+    "sidebar_nav_child_indent": True,
+    "sidebar_nav_compact_style": True,
+    "sidebar_nav_legacy_style": True,
+    "sidebar_nav_flat_style": True,
+}

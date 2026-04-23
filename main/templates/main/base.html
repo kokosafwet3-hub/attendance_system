@@ -1,8 +1,10 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}نظام تسجيل الحضور{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
 </head>
@@ -12,17 +14,21 @@
 <header class="header">
     <div class="header-container">
 
-        <!-- اللوجو على الشمال -->
+        <!-- اللوجو -->
         <div class="logo-box">
-            <img src="{% static 'main/images/logo.png' %}" class="logo">
+            <img src="{% static 'main/images/logo.png' %}" class="logo" alt="Logo">
         </div>
 
-        <!-- العنوان في النص -->
+        <!-- العنوان -->
         <h1 class="header-title">نظام تسجيل الحضور</h1>
+
+        <!-- الأزرار -->
+        <div class="header-actions">
+            {% block header_buttons %}{% endblock %}
+        </div>
 
     </div>
 </header>
-
 
 <main class="container">
     {% block content %}{% endblock %}

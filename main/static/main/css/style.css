@@ -1,183 +1,942 @@
-body {
-    font-family: Arial, sans-serif;
-    background: #f5f7fa;
-    margin: 0;
+/* =====================================================
+   نظام تسجيل الحضور - ملف CSS الكامل
+   Attendance System - Complete Stylesheet
+   ===================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700&display=swap');
+
+/* =====================================================
+   CSS Variables - المتغيرات
+   ===================================================== */
+:root {
+    --primary:        #1e4a7a;
+    --primary-dark:   #142f52;
+    --primary-light:  #2c5f9e;
+    --accent:         #3b82f6;
+    --accent-hover:   #2563eb;
+    --success:        #16a34a;
+    --success-bg:     #dcfce7;
+    --error:          #dc2626;
+    --error-bg:       #fee2e2;
+
+    --bg:             #f0f4f8;
+    --bg-alt:         #e8edf3;
+    --surface:        #ffffff;
+    --surface-2:      #f8fafc;
+    --border:         #d1dbe8;
+    --border-focus:   #3b82f6;
+
+    --text-primary:   #1a2940;
+    --text-secondary: #4a6080;
+    --text-muted:     #8fa3be;
+
+    --header-h:       70px;
+    --radius-sm:      8px;
+    --radius-md:      12px;
+    --radius-lg:      18px;
+
+    --shadow-sm: 0 1px 4px rgba(30,74,122,0.08);
+    --shadow-md: 0 4px 16px rgba(30,74,122,0.12);
+    --shadow-lg: 0 8px 30px rgba(30,74,122,0.16);
+
+    --font-main: 'Cairo', 'Tajawal', sans-serif;
+    --transition: 0.22s ease;
 }
 
-/* Header */
+/* =====================================================
+   Reset & Base
+   ===================================================== */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body:not(.dashboard):not(.change-list):not(.change-form):not(.login) {
+    font-family: var(--font-main);
+    background: var(--bg);
+    color: var(--text-primary);
+    min-height: 100vh;
+    direction: rtl;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+/* =====================================================
+   Header - الهيدر
+   ===================================================== */
 .header {
-    background: #1e4a7a;
-    color: white;
-    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 60%, var(--primary-light) 100%);
+    box-shadow: 0 4px 20px rgba(20,47,82,0.35);
+    height: var(--header-h);
 }
 
 .header-container {
-    width: 90%;
-    margin: auto;
-    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 100%;
+    padding: 0 24px;
     display: flex;
     align-items: center;
-    justify-content: center; /* Title in center */
+    justify-content: space-between;
+    gap: 16px;
+    direction: ltr;
 }
 
 /* Logo */
 .logo-box {
-    position: absolute;
-    left: 0;
+    flex-shrink: 0;
 }
 
 .logo {
-    width: 50px;
-    height: 50px;
+    height: 46px;
+    width: auto;
+    border-radius: 8px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.25));
 }
 
-/* Title Center */
+/* Title */
 .header-title {
-    margin: auto;
-    font-size: 24px;
-    font-weight: bold;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    flex: 1;
+    text-align: center;
 }
 
-/* Container */
+/* Header Actions (nav buttons) */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.nav-btn {
+    color: rgba(255,255,255,0.92) !important;
+    text-decoration: none !important;
+    padding: 7px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 0.88rem;
+    font-weight: 600;
+    font-family: var(--font-main);
+    border: 1.5px solid rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.08);
+    transition: background var(--transition), border-color var(--transition), transform var(--transition);
+    white-space: nowrap;
+}
+
+.nav-btn:hover {
+    background: rgba(255,255,255,0.22) !important;
+    border-color: rgba(255,255,255,0.5);
+    transform: translateY(-1px);
+}
+
+/* =====================================================
+   Main Container - الكونتينر
+   ===================================================== */
 .container {
-    width: 90%;
-    max-width: 1000px;
-    margin: auto;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 36px 24px 60px;
 }
 
-/* Home */
-.home-center {
-    text-align: center;
-    margin-top: 150px;
-}
-
-/* زرار عرض المحاضرات */
-.main-btn {
-    display: inline-block;
-    margin-top: 30px;
-    padding: 16px 50px;
-    background: #1e4a7a; /*  أزرق */
-    color: white;
-    text-decoration: none;
-    font-size: 20px;
-    font-weight: bold;
-    border-radius: 10px;
-    transition: 0.3s;
-}
-
-.main-btn:hover {
-    background: #0056b3;
-    transform: scale(1.05);
-}
-
-/* Lectures */
+/* =====================================================
+   Page Titles - عناوين الصفحات
+   ===================================================== */
 .page-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 28px;
     text-align: center;
-    margin-top: 40px;
+    position: relative;
+    padding-bottom: 14px;
 }
 
-.lectures-list {
-    margin-top: 30px;
+.page-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 50%;
+    transform: translateX(50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    border-radius: 99px;
 }
 
-.lecture-card {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-
-    text-align: center; /* خلي النصوص والزرار في النص */
-}
-
-.lecture-card h3 {
-    margin-bottom: 15px; /* مسافة بين اسم المحاضرة والزرار */
-}
-
-.lecture-card .btn {
-    display: inline-block;
-    margin: auto;
-}
-/* Button داخل المحاضرات */
+/* =====================================================
+   Buttons - الأزرار
+   ===================================================== */
 .btn {
     display: inline-block;
-    margin-top: 10px;
-    background: #1e4a7a;
-    color: white;
-    padding: 10px 25px;
-    border-radius: 6px;
+    padding: 13px 28px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: white !important;
     text-decoration: none;
-    font-weight: bold;
+    border-radius: var(--radius-md);
+    font-size: 0.97rem;
+    font-weight: 600;
+    font-family: var(--font-main);
+    border: none;
+    cursor: pointer;
+    transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+    box-shadow: 0 3px 10px rgba(30,74,122,0.25);
+    text-align: center;
 }
 
 .btn:hover {
-    background: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(30,74,122,0.35);
+    background: linear-gradient(135deg, var(--primary-light), var(--accent-hover));
 }
 
-/* Alerts */
-.alert {
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 6px;
+.btn:active {
+    transform: translateY(0);
+}
+
+/* =====================================================
+   Login Page - صفحة الدخول
+   ===================================================== */
+.login-wrapper {
+    min-height: calc(100vh - var(--header-h));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 16px;
+    background: var(--bg);
+}
+
+.login-box {
+    background: var(--surface);
+    width: 100%;
+    max-width: 380px;
+    padding: 36px 32px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.login-box h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 28px;
+}
+
+.input-group {
+    width: 100%;
+    margin-bottom: 18px;
+    text-align: right;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 13px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    font-family: var(--font-main);
+    color: var(--text-primary);
+    background: var(--surface-2);
+    outline: none;
+    transition: border-color var(--transition), box-shadow var(--transition);
+    direction: ltr;
+}
+
+.input-group input:focus {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+    background: var(--surface);
+}
+
+.input-group input::placeholder {
+    color: var(--text-muted);
+}
+
+.login-btn {
+    width: 100%;
+    padding: 13px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: var(--font-main);
+    cursor: pointer;
+    transition: transform var(--transition), box-shadow var(--transition);
+    box-shadow: 0 3px 12px rgba(30,74,122,0.3);
+    letter-spacing: 0.3px;
+}
+
+.login-btn:hover {
+    background: linear-gradient(135deg, var(--primary-light), var(--accent-hover));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(30,74,122,0.35);
+}
+
+/* Role Selection */
+.roles {
+    width: 100%;
+    max-width: 420px;
     text-align: center;
 }
 
-.alert.success { background: #d4edda; }
-.alert.error { background: #f8d7da; }
-.alert.warning { background: #fff3cd; }
+.roles h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    margin-bottom: 18px;
+}
+
+.roles-container {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.role-item {
+    background: var(--surface);
+    width: 115px;
+    padding: 16px 10px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    transition: transform var(--transition), box-shadow var(--transition), background var(--transition), border-color var(--transition);
+    text-align: center;
+    font-weight: 600;
+    font-family: var(--font-main);
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    border: 2px solid var(--border);
+    user-select: none;
+}
+
+.role-item:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    background: var(--bg-alt);
+    border-color: var(--accent);
+}
+
+.role-item.selected {
+    border-color: var(--primary);
+    background: #ebf0f8;
+    box-shadow: 0 4px 14px rgba(30,74,122,0.2);
+    color: var(--primary);
+}
+
+.arrow {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+    display: block;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+/* =====================================================
+   Error / Success Messages - الرسائل
+   ===================================================== */
+.error {
+    background: var(--error-bg);
+    color: var(--error);
+    padding: 11px 16px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 14px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: 1px solid rgba(220,38,38,0.2);
+    text-align: right;
+}
+
+.success-msg {
+    background: var(--success-bg);
+    color: var(--success);
+    padding: 11px 16px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 14px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: 1px solid rgba(22,163,74,0.2);
+    text-align: right;
+}
+
+/* =====================================================
+   Home Page - الصفحة الرئيسية (doctor/admin)
+   ===================================================== */
+.home-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(80vh - var(--header-h));
+    text-align: center;
+    gap: 28px;
+    padding: 60px 20px;
+    animation: fadeInUp 0.5s ease both;
+}
+
+.home-center h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.home-center .btn {
+    font-size: 1.1rem;
+    padding: 16px 40px;
+}
+
+/* =====================================================
+   Select Level Page - اختيار الفرقة
+   ===================================================== */
+.level-page {
+    text-align: center;
+    padding: 50px 20px;
+    animation: fadeInUp 0.5s ease both;
+}
+
+.level-page h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 36px;
+}
+
+.level-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    max-width: 260px;
+    margin: 0 auto;
+}
+
+.level-buttons .btn {
+    width: 100%;
+    display: block;
+    padding: 15px;
+    font-size: 1rem;
+}
+
+/* =====================================================
+   Lectures List - قائمة المحاضرات
+   ===================================================== */
+.lectures-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 22px;
+    margin-top: 12px;
+    animation: fadeInUp 0.5s ease both;
+}
+
+.lecture-card {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 24px 22px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border);
+    transition: transform var(--transition), box-shadow var(--transition);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.lecture-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.lecture-card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 4px;
+    text-align: center;
+}
+
+.lecture-card p {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    text-align: center; 
+}
+
+.lecture-card .btn {
+    margin-top: auto;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    text-align: center;
+    width: 100%;
+}
 
 .empty-text {
     text-align: center;
-    margin-top: 20px;
+    color: var(--text-muted);
+    font-size: 1rem;
+    padding: 60px 20px;
+    grid-column: 1/-1;
 }
 
-/* صفحة تسجيل الحضور */
-.attendance-form {
-    max-width: 400px;
-    margin: 50px auto;
-    text-align: center;
-}
-
-.attendance-form input[type="text"] {
-    width: 100%;
-    font-size: 3rem; /* كبير جداً */
-    padding: 20px;
-    border-radius: 10px;
-    border: 2px solid #ccc;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.attendance-form button {
-    font-size: 2rem;
-    padding: 16px 50px;
-    border-radius: 10px;
-    background: #1e4a7a;
-    color: white;
-    border: none;
-    font-weight: bold;
-}
-
-.attendance-form button:hover {
-    background: #0056b3;
-    transform: scale(1.05);
-}
-/* Lecture Detail - كل حاجة في النص */
+/* =====================================================
+   Lecture Detail Page - تفاصيل المحاضرة
+   ===================================================== */
 .lecture-detail-page {
-    text-align: center; /* يخلي كل النصوص و الزرار في النص */
-    margin-top: 50px;
+    background: var(--surface);
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 36px 32px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
+    animation: fadeInUp 0.5s ease both;
 }
 
 .lecture-detail-page h1 {
-    font-size: 2rem;
-    margin-bottom: 15px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--bg-alt);
+    text-align: center;
 }
 
 .lecture-detail-page p {
-    font-size: 1.2rem;
-    margin: 5px 0;
+    font-size: 0.97rem;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-align: center;
+}
+
+.lecture-detail-page p strong {
+    color: var(--text-primary);
+    font-weight: 700;
 }
 
 .lecture-detail-page .btn {
-    margin-top: 20px;
+    margin-top: 24px;
+    padding: 14px 32px;
+    font-size: 1.05rem;
+    width: 100%;
+    text-align: center;
+    display: block;
+}
+
+/* =====================================================
+   QR Code Page - صفحة الـ QR
+   ===================================================== */
+.qr-page {
+    text-align: center;
+    padding: 50px 20px;
+    animation: fadeInUp 0.5s ease both;
+}
+
+.qr-page h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 30px;
+}
+
+.qr-image-wrapper {
+    display: inline-block;
+    background: var(--surface);
+    padding: 22px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
+}
+
+.qr-image-wrapper img {
+    width: 340px;
+    max-width: 100%;
+    display: block;
+    border-radius: var(--radius-sm);
+}
+
+/* =====================================================
+   Student Home - صفحة الطالب
+   ===================================================== */
+.student-home {
+    padding: 40px 20px;
+    text-align: center;
+    animation: fadeInUp 0.5s ease both;
+}
+
+.student-home h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 36px;
+}
+
+.student-lectures {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.student-lecture-btn {
+    display: block;
+    width: 100%;
+    padding: 16px 28px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: white !important;
+    border-radius: var(--radius-md);
+    font-size: 1.05rem;
+    font-weight: 700;
+    font-family: var(--font-main);
+    box-shadow: var(--shadow-md);
+    transition: transform var(--transition), box-shadow var(--transition);
+    text-align: center;
+}
+
+.student-lecture-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+}
+
+.no-lectures {
+    color: var(--text-muted);
+    font-size: 1rem;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+/* =====================================================
+   Student Lecture Page (scan instructions)
+   ===================================================== */
+.scan-instructions {
+    max-width: 500px;
+    margin: 60px auto;
+    text-align: center;
+    background: var(--surface);
+    padding: 40px 32px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
+    animation: fadeInUp 0.5s ease both;
+}
+
+.scan-instructions h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 14px;
+}
+
+.scan-instructions p {
+    color: var(--text-secondary);
+    margin-bottom: 28px;
+    font-size: 0.97rem;
+}
+
+.scan-instructions .btn {
+    display: inline-block;
+    padding: 14px 32px;
+    font-size: 1rem;
+}
+
+/* =====================================================
+   Scan QR Page - مسح QR
+   ===================================================== */
+.scan-qr-page {
+    text-align: center;
+    padding: 40px 20px;
+    animation: fadeInUp 0.5s ease both;
+}
+
+.scan-qr-page h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 28px;
+}
+
+#reader {
+    width: 300px;
+    margin: 0 auto;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    border: 2px solid var(--border);
+    background: var(--surface);
+}
+
+/* =====================================================
+   Attendance Registration - تسجيل الحضور
+   ===================================================== */
+.attendance-wrapper {
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 20px;
+    animation: fadeInUp 0.5s ease both;
+}
+
+.attendance-card {
+    background: var(--surface);
+    width: 100%;
+    max-width: 420px;
+    padding: 40px 32px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
+    text-align: center;
+}
+
+.attendance-card h2 {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--primary);
+    margin-bottom: 28px;
+}
+
+.already-marked {
+    color: var(--success);
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 20px;
+    background: var(--success-bg);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(22,163,74,0.2);
+}
+
+.student-id-input {
+    width: 100%;
+    text-align: center;
+    font-size: 2.2rem;
+    padding: 16px 12px;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-main);
+    color: var(--text-primary);
+    background: var(--surface-2);
+    outline: none;
+    transition: border-color var(--transition), box-shadow var(--transition);
+    direction: ltr;
+    letter-spacing: 4px;
+    margin-bottom: 22px;
+}
+
+.student-id-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(30,74,122,0.12);
+    background: var(--surface);
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 1.05rem;
+    font-weight: 700;
+    font-family: var(--font-main);
+    cursor: pointer;
+    transition: transform var(--transition), box-shadow var(--transition);
+    box-shadow: 0 3px 12px rgba(30,74,122,0.28);
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(30,74,122,0.38);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+/* =====================================================
+   Utilities
+   ===================================================== */
+.text-center { text-align: center; }
+.mt-20 { margin-top: 20px; }
+.mt-40 { margin-top: 40px; }
+
+/* =====================================================
+   Animations
+   ===================================================== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(22px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =====================================================
+   Responsive - الموبايل
+   ===================================================== */
+@media (max-width: 600px) {
+    .header-title {
+        font-size: 1rem;
+    }
+
+    .nav-btn {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+    }
+
+    .container {
+        padding: 24px 16px 48px;
+    }
+
+    .login-box {
+        padding: 28px 20px;
+    }
+
+    .roles-container {
+        gap: 10px;
+    }
+
+    .role-item {
+        width: 95px;
+        padding: 12px 8px;
+    }
+
+    .lecture-detail-page {
+        padding: 24px 18px;
+        margin: 20px auto;
+    }
+
+    .attendance-card {
+        padding: 28px 18px;
+    }
+
+    .student-id-input {
+        font-size: 1.7rem;
+    }
+
+    .qr-image-wrapper img {
+        width: 260px;
+    }
+
+    .lectures-list {
+        grid-template-columns: 1fr;
+    }
+
+    .home-center h2 {
+        font-size: 1.4rem;
+    }
+}
+/* Fix: توحيد الأزرار */
+
+.btn-full {
+    width: 100%;
+}
+
+.btn-big {
+    padding: 16px 40px;
+    font-size: 1.1rem;
+}
+
+a[style], button[style] {
+    all: unset;
+}
+
+/* Layout Helpers */
+.center-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* تحسين الفورم */
+.form-card {
+    background: var(--surface);
+    padding: 30px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
+}
+/* ===== Scan QR Page ===== */
+.scan-qr-page {
+    min-height: calc(100vh - var(--header-h));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeInUp 0.5s ease both;
+}
+
+.scan-qr-page h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 24px;
+}
+
+#reader {
+    width: 300px;
+    max-width: 90vw;
+    margin: 0 auto;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    border: 2px solid var(--border);
+    background: var(--surface);
+}
+
+/* إخفاء Upload Image */
+#reader__dashboard_section_swaplink,
+#reader__filescan_input,
+#reader__status_span {
+    display: none !important;
+}
+
+/* منع CSS بتاعنا من التأثير على Django Admin */
+body.change-list,
+body.change-form,
+body.dashboard {
+    direction: ltr !important;
+    font-family: inherit !important;
+    background: unset !important;
 }

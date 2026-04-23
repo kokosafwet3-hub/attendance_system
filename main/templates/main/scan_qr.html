@@ -1,0 +1,33 @@
+{% extends 'main/base.html' %}
+
+{% block title %}مسح QR{% endblock %}
+
+{% block header_buttons %}
+<a href="{% url 'student_home' %}" class="nav-btn">Home</a>
+<a href="{% url 'logout' %}" class="nav-btn">Logout</a>
+{% endblock %}
+
+{% block content %}
+
+<div class="scan-qr-page">
+    <h2>امسح الـ QR</h2>
+    <div id="reader"></div>
+</div>
+
+<script src="https://unpkg.com/html5-qrcode"></script>
+<script>
+    function onScanSuccess(decodedText) {
+        window.location.href = decodedText;
+    }
+
+    let scanner = new Html5QrcodeScanner("reader", { 
+        fps: 10, 
+        qrbox: 250,
+        rememberLastUsedCamera: true,
+        supportedScanTypes: [0]  // 0 = CAMERA بس
+    });
+
+    scanner.render(onScanSuccess);
+</script>
+
+{% endblock %}

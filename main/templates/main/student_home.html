@@ -1,0 +1,27 @@
+{% extends 'main/base.html' %}
+
+{% block title %}محاضرات اليوم{% endblock %}
+
+{% block header_buttons %}
+<a href="{% url 'logout' %}" class="nav-btn">Logout</a>
+{% endblock %}
+
+{% block content %}
+
+<div class="student-home">
+    <h2>محاضرات اليوم</h2>
+
+    {% if lectures %}
+        <div class="student-lectures">
+            {% for lecture in lectures %}
+                <a href="{% url 'student_lecture' lecture.id %}" class="student-lecture-btn">
+                    {{ lecture.name }}
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="no-lectures">لا توجد محاضرات اليوم</p>
+    {% endif %}
+</div>
+
+{% endblock %}

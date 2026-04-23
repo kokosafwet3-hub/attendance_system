@@ -1,0 +1,18 @@
+{% extends 'main/base.html' %}
+
+{% block title %}تسجيل الحضور{% endblock %}
+
+{% block header_buttons %}
+<a href="{% url 'student_home' %}" class="nav-btn">Home</a>
+<a href="{% url 'logout' %}" class="nav-btn">Logout</a>
+{% endblock %}
+
+{% block content %}
+
+<div class="scan-instructions">
+    <h2>للتسجيل في المحاضرة</h2>
+    <p>برجاء فتح العدسة ومسح الـ QR</p>
+    <a href="{% url 'scan_qr' lecture.id %}" class="btn">فتح العدسة</a>
+</div>
+
+{% endblock %}

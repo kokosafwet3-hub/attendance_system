@@ -1,0 +1,86 @@
+/* ==============================
+   RTL Fix - الأساسي
+============================== */
+body {
+    direction: rtl;
+    text-align: right;
+}
+
+/* الـ sidebar يفضل على اليمين */
+.main-sidebar {
+    right: 0 !important;
+    left: auto !important;
+    direction: ltr;
+}
+
+/* الـ content يبعد عن الـ sidebar من اليمين */
+.content-wrapper {
+    margin-right: 60px !important;
+    margin-left: 0 !important;
+}
+
+/* الـ navbar يتمدد صح */
+.main-header.navbar {
+    margin-right: 60px !important;
+    margin-left: 0 !important;
+}
+
+/* لما الـ sidebar يتقفل */
+.sidebar-open .content-wrapper,
+.sidebar-open .main-header.navbar {
+    margin-right: 250px !important;
+}
+
+/* موبايل */
+@media (max-width: 768px) {
+    .content-wrapper,
+    .main-header.navbar {
+        margin-right: 0 !important;
+    }
+}
+/* ==============================
+   Sidebar text center
+============================== */
+.nav-sidebar .nav-item .nav-link {
+    text-align: center !important;
+    justify-content: center !important;
+    padding: 10px !important;
+}
+
+.nav-sidebar .nav-link p {
+    text-align: center !important;
+    margin: 0 !important;
+}
+
+/* أيقونة + نص جنب بعض في النص */
+.nav-sidebar .nav-link {
+    display: flex !important;
+    flex-direction: row-reverse !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+/* ==============================
+   Fix زرار أضف فوق الجدول
+============================== */
+.object-tools {
+    float: right !important;
+    margin-right: 0 !important;
+    margin-left: auto !important;
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+/* ==============================
+   Fix content مسافة الـ sidebar
+============================== */
+.content-wrapper {
+    margin-right: 250px !important;
+    margin-left: 0 !important;
+    padding-right: 20px !important;
+}
+
+.main-header.navbar {
+    margin-right: 250px !important;
+    margin-left: 0 !important;
+}
