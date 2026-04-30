@@ -127,8 +127,8 @@ def generate_qr(request, lecture_id):
         border=5
     )
 
-    server_ip = request.get_host().split(':')[0] 
-    qr.add_data(f'http://{server_ip}:8000/lecture/{lecture.id}/attendance/')
+    base_url = request.build_absolute_uri(f'/lecture/{lecture.id}/attendance/')
+    qr.add_data(base_url)
 
     qr.make(fit=True)
     img = qr.make_image(fill_color='black', back_color='white')
