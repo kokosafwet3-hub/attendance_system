@@ -16,15 +16,31 @@
 
 <script src="https://unpkg.com/html5-qrcode"></script>
 <script>
+    let scanned = false;
+    let scanner;
+
     function onScanSuccess(decodedText) {
-        window.location.href = decodedText;
+        if (scanned) return;
+
+        scanned = true;
+
+        // إيقاف الكاميرا فورًا
+        if (scanner) {
+            scanner.clear().then(() => {
+                window.location.href = decodedText;
+            }).catch(() => {
+                window.location.href = decodedText;
+            });
+        } else {
+            window.location.href = decodedText;
+        }
     }
 
-    let scanner = new Html5QrcodeScanner("reader", { 
-        fps: 10, 
+    scanner = new Html5QrcodeScanner("reader", {
+        fps: 10,
         qrbox: 250,
         rememberLastUsedCamera: true,
-        supportedScanTypes: [0]  // 0 = CAMERA بس
+        supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
     });
 
     scanner.render(onScanSuccess);
