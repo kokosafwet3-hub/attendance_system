@@ -3,6 +3,6 @@
     "buildCommand": "pip install -r requirements.txt && python manage.py collectstatic --noinput"
   },
   "deploy": {
-    "startCommand": "python manage.py migrate && python manage.py createsuperuser --noinput && gunicorn attendance_system.wsgi --bind 0.0.0.0:$PORT --log-file -"
+    "startCommand": "python manage.py migrate && gunicorn attendance_system.wsgi --bind 0.0.0.0:$PORT --log-file -"
   }
 }
