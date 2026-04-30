@@ -82,7 +82,7 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'main' / 'static']
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'  
 
@@ -142,3 +142,4 @@ JAZZMIN_UI_TWEAKS = {
     "sidebar_nav_legacy_style": True,
     "sidebar_nav_flat_style": True,
 }
+os.makedirs(os.path.join(BASE_DIR, 'staticfiles'), exist_ok=True)
