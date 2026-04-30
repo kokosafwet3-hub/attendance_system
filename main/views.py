@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
+import datetime
 from django.http import HttpResponse
 from django.contrib import messages
-from .models import Student, Lecture, Attendance
+from .models import Student, Lecture, Attendance, Level, Department
 from .forms import StudentForm
 import qrcode
 from io import BytesIO
@@ -42,8 +43,15 @@ def home(request):
 # اختيار الفرقة 
 # =========================
 @login_required
-def select_level(request):
-    return render(request, 'main/select_level.html')
+def select_level(request, department_id):
+    department = get_object_or_404(Department, id=department_id)
+
+    levels = Level.objects.filter(Department=department)
+
+    return render(request, 'main/select_level.html', {
+        'department': department,
+        'levels': levels
+    })
 
 # =========================
 # تفاصيل المحاضرة
@@ -71,51 +79,39 @@ def lecture_detail(request, lecture_id):
 def mark_attendance(request, lecture_id):
     lecture = get_object_or_404(Lecture, id=lecture_id)
 
-    already_marked = False
+    if not hasattr(request.user, 'student'):
+        messages.error(request, "هذا الحساب ليس طالب ❌")
+        return redirect('login')
 
-    if request.user.is_authenticated and hasattr(request.user, 'student'):
-        already_marked = Attendance.objects.filter(
-    student=request.user.student,
-    lecture=lecture,
-    status='present'
-).exists()
+    student = request.user.student
+    
+    # ✅ الحل: return جوه الـ if
+    if student.level != lecture.level or student.level.Department != lecture.level.Department:
+        messages.error(request, "هذه المحاضرة ليست مخصصة لك ❌")
+        return redirect('student_home')
 
-    if request.method == 'POST':
-        student_id = request.POST.get('student_id')
+    device_ip = get_client_ip(request)
+    user_agent = request.META.get('HTTP_USER_AGENT', '')
 
-        device_ip = get_client_ip(request)
-        user_agent = request.META.get('HTTP_USER_AGENT', '')
+    attendance, created = Attendance.objects.get_or_create(
+        student=student,
+        lecture=lecture,
+        defaults={'status': 'absent'}
+    )
 
-        try:
-            student = Student.objects.get(student_id=student_id)
-        except Student.DoesNotExist:
-            messages.error(request, "الطالب غير موجود ❌")
-            return redirect('mark_attendance', lecture_id=lecture.id)
-
-        attendance, created = Attendance.objects.get_or_create(
-            student=student,
-            lecture=lecture,
-            defaults={'status': 'absent'}
-        )
-
-        if attendance.status == 'present':
-            messages.warning(request, "تم تسجيل حضورك بالفعل ✅")
-        else:
-            attendance.status = 'present'
-            attendance.device_ip = device_ip
-            attendance.user_agent = user_agent
-            attendance.save()
-
-            messages.success(request, f"تم تسجيل حضورك يا {student.name} ✅")
-
-        return render(request, 'main/mark_attendance.html', {
-            'lecture': lecture,
-            'already_marked': True
-        })
+    if attendance.status == 'present':
+        messages.warning(request, "تم تسجيل حضورك بالفعل ✅")
+    else:
+        attendance.status = 'present'
+        attendance.device_ip = device_ip
+        attendance.user_agent = user_agent
+        attendance.marked_at = timezone.now()
+        attendance.save()
+        messages.success(request, f"تم تسجيل حضورك يا {student.name} ✅")
 
     return render(request, 'main/mark_attendance.html', {
         'lecture': lecture,
-        'already_marked': already_marked
+        'already_marked': not created  # 
     })
 
 
@@ -131,7 +127,7 @@ def generate_qr(request, lecture_id):
         border=5
     )
 
-    server_ip = request.get_host().split(':')[0] # 192.168.1.5
+    server_ip = request.get_host().split(':')[0] 
     qr.add_data(f'http://{server_ip}:8000/lecture/{lecture.id}/attendance/')
 
     qr.make(fit=True)
@@ -147,15 +143,17 @@ def generate_qr(request, lecture_id):
 # صفحة عرض كل المحاضرات
 # =========================
 @login_required
-def lectures_page(request, level_id=None):
-    if level_id:
-        lectures = Lecture.objects.filter(level__level_name__contains=level_id).order_by('-date')
-    else:
-        lectures = Lecture.objects.all().order_by('-date')
+def lectures_page(request, level_id):
+    today = datetime.date.today()
 
-    return render(request, 'main/lectures.html', {'lectures': lectures})
+    lectures = Lecture.objects.filter(
+        level_id=level_id,
+        date=today
+    ).order_by('start_time')
 
-
+    return render(request, 'main/lectures.html', {
+        'lectures': lectures
+    })
 # =========================
 # Export Excel per Lecture (ADMIN ONLY)
 # =========================
@@ -167,18 +165,21 @@ def export_lecture_excel(request, lecture_id):
     ws = wb.active
     ws.title = "Attendance"
 
-    ws.append(["كود الطالب", "الاسم", "الفرقة", "المحاضرة", "الحالة", "وقت التسجيل"])
+    
+    ws.append(["كود الطالب", "الاسم", "الفرقة", "المحاضرة", "الحالة", "وقت التسجيل", "IP الجهاز"])
 
     for record in records:
-       status_ar = "حاضر" if record.status == "present" else "غياب"
-       ws.append([
-     record.student.student_id,
-     record.student.name,
-     str(record.student.level),
-     record.lecture.name,
-     status_ar,
-     record.created_at.replace(tzinfo=None) if record.status == "present" else ""
-    ])
+        status_ar = "حاضر" if record.status == "present" else "غياب"
+        ws.append([
+            record.student.student_id,
+            record.student.name,
+            str(record.student.level),
+            record.lecture.name,
+            status_ar,
+            record.marked_at.replace(tzinfo=None) if record.status == "present" else "",
+            record.device_ip if record.status == "present" else ""  
+        ])
+
     response = HttpResponse(
         content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     )
@@ -237,7 +238,7 @@ def login_view(request):
 @login_required
 def student_home(request):
     student = request.user.student
-    today = timezone.now().date()
+    today = datetime.date.today()
 
     lectures = Lecture.objects.filter(
         level=student.level,
@@ -251,9 +252,40 @@ def student_home(request):
 @login_required
 def student_lecture(request, lecture_id):
     lecture = get_object_or_404(Lecture, id=lecture_id)
+    student = request.user.student
+
+    # 🔒 حماية: الطالب لازم يكون من نفس الفرقة والقسم
+    if student.level != lecture.level or student.level.Department != lecture.level.Department:
+        messages.error(request, "غير مصرح لك بدخول هذه المحاضرة ❌")
+        return redirect('student_home')
+
+    # 🟢 كل محاضرات نفس المادة داخل نفس الفرقة والقسم
+    total_lectures = Lecture.objects.filter(
+        name=lecture.name,
+        level=student.level
+    ).count()
+
+    # 🟢 عدد حضور الطالب لنفس المادة
+    present_count = Attendance.objects.filter(
+        student=student,
+        lecture__name=lecture.name,
+        lecture__level=student.level,
+        status='present'
+    ).count()
+
+    # 🟢 نسبة الحضور
+    if total_lectures > 0:
+        percentage = (present_count / total_lectures) * 100
+    else:
+        percentage = 0
+
+    # ✅ الرسالة تظهر بس لو في 5 محاضرات على الأقل والنسبة أقل من 50%
+    warning = total_lectures >= 5 and percentage < 50
 
     return render(request, 'main/student_lecture.html', {
-        'lecture': lecture
+        'lecture': lecture,
+        'warning': warning,
+        'percentage': round(percentage, 1)
     })
 
 @login_required
@@ -285,4 +317,12 @@ def student_scan(request):
     return render(request, "scan.html", {
         "show_home": True,
         "home_url": "/student-home/"
+    })
+
+@login_required
+def select_department(request):
+    departments =  Department.objects.all()
+
+    return render(request, 'main/select_department.html', {
+        'departments': departments
     })

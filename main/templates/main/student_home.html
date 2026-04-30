@@ -11,6 +11,14 @@
 <div class="student-home">
     <h2>محاضرات اليوم</h2>
 
+    {% if messages %}
+     {% for message in messages %}
+        <div class="{% if message.tags == 'success' %}success-msg{% else %}error{% endif %}">
+            {{ message }}
+        </div>
+     {% endfor %}
+    {% endif %}
+
     {% if lectures %}
         <div class="student-lectures">
             {% for lecture in lectures %}

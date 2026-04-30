@@ -14,12 +14,12 @@
         <h2>تسجيل الحضور</h2>
 
         {% if messages %}
-    {% for message in messages %}
-        <div class="{% if message.tags == 'success' %}success-msg{% else %}error{% endif %}">
-            {{ message }}
-        </div>
-    {% endfor %}
-{% endif %}
+            {% for message in messages %}
+                <div class="{% if message.tags == 'success' %}success-msg{% else %}error{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
 
         {% if error %}
             <div class="error">{{ error }}</div>
@@ -28,19 +28,9 @@
         {% if already_marked %}
             <div class="already-marked">تم تسجيل حضورك بالفعل ✅</div>
         {% else %}
-            <form method="POST">
-                {% csrf_token %}
-                <input
-                    type="text"
-                    name="student_id"
-                    id="student_id"
-                    placeholder="أدخل الكود"
-                    class="student-id-input"
-                    required
-                    autofocus
-                >
-                <button type="submit" class="submit-btn">Submit</button>
-            </form>
+            <div class="success-msg">
+                جارٍ تسجيل حضورك...
+            </div>
         {% endif %}
     </div>
 </div>

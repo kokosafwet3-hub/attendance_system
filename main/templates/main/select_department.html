@@ -1,7 +1,5 @@
 {% extends 'main/base.html' %}
 
-{% block title %}اختيار الفرقة{% endblock %}
-
 {% block header_buttons %}
 <a href="{% url 'home' %}" class="nav-btn">Home</a>
 <a href="{% url 'logout' %}" class="nav-btn">Logout</a>
@@ -10,12 +8,12 @@
 {% block content %}
 
 <div class="level-page">
-    <h2>اختار الفرقة - {{ department.name }}</h2>
+    <h2>اختار القسم</h2>
 
     <div class="level-buttons">
-        {% for level in levels %}
-            <a href="{% url 'lectures_by_level' level.id %}" class="btn">
-                {{ level.level_name }}
+        {% for dept in departments %}
+            <a href="{% url 'select_level' dept.id %}" class="btn">
+                {{ dept.name }}
             </a>
         {% endfor %}
     </div>

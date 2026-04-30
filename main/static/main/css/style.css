@@ -9,27 +9,26 @@
    CSS Variables - المتغيرات
    ===================================================== */
 :root {
-    --primary:        #1e4a7a;
-    --primary-dark:   #142f52;
-    --primary-light:  #2c5f9e;
-    --accent:         #3b82f6;
-    --accent-hover:   #2563eb;
-    --success:        #16a34a;
-    --success-bg:     #dcfce7;
-    --error:          #dc2626;
-    --error-bg:       #fee2e2;
+   --primary:       #0D9488;
+   --primary-dark:  #0F766E;
+   --primary-light: #2DD4BF;
+   --accent:        #3B82F6;
+   --accent-hover:  #2563EB;
+   --success:       #16A34A;
+   --success-bg:    #F0FDF4;
+   --error:         #E11D48;
+   --error-bg:      #FFF1F2;
 
-    --bg:             #f0f4f8;
-    --bg-alt:         #e8edf3;
-    --surface:        #ffffff;
-    --surface-2:      #f8fafc;
-    --border:         #d1dbe8;
-    --border-focus:   #3b82f6;
+   --bg:            #F0FDFA;
+   --bg-alt:        #CCFBF1;
+   --surface:       #FFFFFF;
+   --surface-2:     #F8FFFE;
+   --border:        #99F6E4;
+   --border-focus:  #0D9488;
 
-    --text-primary:   #1a2940;
-    --text-secondary: #4a6080;
-    --text-muted:     #8fa3be;
-
+   --text-primary:  #042F2E;
+   --text-secondary:#134E4A;
+   --text-muted:    #0F766E;
     --header-h:       70px;
     --radius-sm:      8px;
     --radius-md:      12px;
@@ -939,4 +938,61 @@ body.dashboard {
     direction: ltr !important;
     font-family: inherit !important;
     background: unset !important;
+}
+/* ===========================
+   Toast Notification
+=========================== */
+.toast-notification {
+    position: fixed;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1e1e1e;
+    color: #fff;
+    padding: 14px 20px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 9999;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+    border-right: 4px solid #f59e0b;
+    min-width: 300px;
+    animation: slideDown 0.4s ease;
+    direction: rtl;
+}
+
+.toast-icon {
+    font-size: 1.3rem;
+}
+
+.toast-text {
+    flex: 1;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.toast-close {
+    background: none;
+    border: none;
+    color: #aaa;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0 4px;
+    line-height: 1;
+}
+
+.toast-close:hover {
+    color: #fff;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        top: 0px;
+    }
+    to {
+        opacity: 1;
+        top: 24px;
+    }
 }

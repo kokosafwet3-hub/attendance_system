@@ -2,13 +2,40 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 
+
 # =========================
-# Level
+# Department (القسم)
 # =========================
-class Level(models.Model):
-    level_name = models.CharField(max_length=50)
+class Department(models.Model):
+    name = models.CharField(max_length=100, verbose_name="اسم القسم")
+
+    class Meta:
+        verbose_name = "قسم"
+        verbose_name_plural = "الأقسام"
 
     def __str__(self):
+        return self.name
+
+
+# =========================
+# Level (المستوى)
+# =========================
+class Level(models.Model):
+    level_name = models.CharField(max_length=50, verbose_name="المستوى")
+    Department = models.ForeignKey(
+        Department, on_delete=models.CASCADE,
+        null=True, blank=True,
+        related_name='levels',
+        verbose_name="القسم"
+    )
+
+    class Meta:
+        verbose_name = "مستوى"
+        verbose_name_plural = "المستويات"
+
+    def __str__(self):
+        if self.Department:
+            return f"{self.Department.name} - {self.level_name}"
         return self.level_name
 
 
@@ -17,7 +44,11 @@ class Level(models.Model):
 # =========================
 class Doctor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, verbose_name="الاسم")
+
+    class Meta:
+        verbose_name = "دكتور"
+        verbose_name_plural = "الدكاترة"
 
     def __str__(self):
         return self.name
@@ -27,24 +58,45 @@ class Doctor(models.Model):
 # Student
 # =========================
 class Student(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)  
-    name = models.CharField(max_length=100)
-    student_id = models.IntegerField()
-    level = models.ForeignKey(Level, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100, verbose_name="الاسم")
+    student_id = models.IntegerField(verbose_name="كود الطالب")
+    level = models.ForeignKey(
+        Level, on_delete=models.CASCADE,
+        related_name='students',
+        verbose_name="المستوى"
+    )
+
+    class Meta:
+        verbose_name = "طالب"
+        verbose_name_plural = "الطلاب"
 
     def __str__(self):
-        return self.name
+        return f"{self.name} ({self.student_id})"
+
 
 # =========================
 # Lecture
 # =========================
 class Lecture(models.Model):
-    name = models.CharField(max_length=200)
-    date = models.DateField()
-    start_time = models.TimeField()
-    end_time = models.TimeField(null=True, blank=True)
-    doctor = models.ForeignKey(Doctor, on_delete=models.SET_NULL, null=True)
-    level = models.ForeignKey(Level, on_delete=models.SET_NULL, null=True)  
+    name = models.CharField(max_length=200, verbose_name="اسم المادة")
+    date = models.DateField(verbose_name="التاريخ")
+    start_time = models.TimeField(verbose_name="وقت البداية")
+    end_time = models.TimeField(null=True, blank=True, verbose_name="وقت النهاية")
+    doctor = models.ForeignKey(
+        Doctor, on_delete=models.SET_NULL, null=True,
+        related_name='lectures',
+        verbose_name="الدكتور"
+    )
+    level = models.ForeignKey(
+        Level, on_delete=models.SET_NULL, null=True,
+        related_name='lectures',
+        verbose_name="المستوى"
+    )
+
+    class Meta:
+        verbose_name = "محاضرة"
+        verbose_name_plural = "المحاضرات"
 
     def __str__(self):
         return f"{self.name} - {self.date}"
@@ -55,21 +107,33 @@ class Lecture(models.Model):
 # =========================
 class Attendance(models.Model):
     STATUS_CHOICES = [
-        ('present', 'Present'),
-        ('absent', 'Absent'),
+        ('present', 'حاضر'),
+        ('absent', 'غائب'),
     ]
 
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    lecture = models.ForeignKey(Lecture, on_delete=models.CASCADE)
-
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='absent')
-
-    device_ip = models.GenericIPAddressField(null=True, blank=True)
+    student = models.ForeignKey(
+        Student, on_delete=models.CASCADE,
+        related_name='attendances',
+        verbose_name="الطالب"
+    )
+    lecture = models.ForeignKey(
+        Lecture, on_delete=models.CASCADE,
+        related_name='attendances',
+        verbose_name="المحاضرة"
+    )
+    status = models.CharField(
+        max_length=10, choices=STATUS_CHOICES,
+        default='absent', verbose_name="الحالة"
+    )
+    device_ip = models.GenericIPAddressField(null=True, blank=True, verbose_name="IP الجهاز")
     user_agent = models.TextField(blank=True)
-    created_at = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(default=timezone.now, verbose_name="وقت التسجيل")
+    marked_at = models.DateTimeField(null=True, blank=True, verbose_name="وقت مسح QR")  # ✅ جديد
 
     class Meta:
         unique_together = ('student', 'lecture')
+        verbose_name = "حضور"
+        verbose_name_plural = "سجلات الحضور"
 
     def __str__(self):
-        return f"{self.student.name} - {self.lecture.name} - {self.status}"
+        return f"{self.student.name} - {self.lecture.name} - {self.get_status_display()}"

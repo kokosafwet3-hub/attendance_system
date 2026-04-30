@@ -9,10 +9,30 @@
 
 {% block content %}
 
+{% if warning %}
+<div class="toast-notification" id="attendanceToast">
+    <span class="toast-icon">🔔</span>
+    <span class="toast-text">حضورك في هذه المادة ضعيف ({{ percentage }}%)</span>
+    <button class="toast-close" onclick="document.getElementById('attendanceToast').style.display='none'">✕</button>
+</div>
+{% endif %}
+
 <div class="scan-instructions">
     <h2>للتسجيل في المحاضرة</h2>
     <p>برجاء فتح العدسة ومسح الـ QR</p>
     <a href="{% url 'scan_qr' lecture.id %}" class="btn">فتح العدسة</a>
 </div>
+
+<script>
+    // تختفي تلقائياً بعد 5 ثواني
+    setTimeout(() => {
+        const toast = document.getElementById('attendanceToast');
+        if (toast) {
+            toast.style.transition = 'opacity 0.5s ease';
+            toast.style.opacity = '0';
+            setTimeout(() => toast.style.display = 'none', 500);
+        }
+    }, 5000);
+</script>
 
 {% endblock %}
