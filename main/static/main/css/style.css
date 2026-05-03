@@ -702,6 +702,41 @@ input[type="radio"] {
     background: var(--surface);
 }
 
+#reader__camera_selection {
+    width: 60% !important;
+    padding: 6px 10px !important;
+    border-radius: var(--radius-md) !important;
+    border: 1px solid var(--border) !important;
+    background: var(--surface) !important;
+    color: var(--text) !important;
+    font-size: 0.85rem !important;
+    margin-bottom: 8px !important;
+    cursor: pointer !important;
+}
+
+#reader__dashboard_section_csr button {
+    width: 60% !important;
+    padding: 8px !important;
+    background: var(--primary) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: var(--radius-md) !important;
+    font-size: 0.9rem !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    margin: 4px auto !important;
+    display: block !important;
+}
+
+#reader__dashboard {
+    padding: 8px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 6px !important;
+}
+
+
 /* =====================================================
    Attendance Registration - تسجيل الحضور
    ===================================================== */

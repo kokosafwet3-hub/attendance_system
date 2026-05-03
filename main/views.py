@@ -111,7 +111,7 @@ def mark_attendance(request, lecture_id):
 
     return render(request, 'main/mark_attendance.html', {
         'lecture': lecture,
-        'already_marked': not created  # 
+        'already_marked': not created   
     })
 
 
