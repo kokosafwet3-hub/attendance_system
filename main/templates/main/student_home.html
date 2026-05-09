@@ -12,18 +12,30 @@
     <h2>محاضرات اليوم</h2>
 
     {% if messages %}
-     {% for message in messages %}
-        <div class="{% if message.tags == 'success' %}success-msg{% else %}error{% endif %}">
-            {{ message }}
-        </div>
-     {% endfor %}
+        {% for message in messages %}
+            <div class="{% if message.tags == 'success' %}success-msg{% else %}error{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
     {% endif %}
 
-    {% if lectures %}
+    {% if has_warning %}
+        <div class="toast-notification" id="attendanceToast">
+            <span class="toast-icon">⚠️</span>
+            <span class="toast-text">المحاضرات التي باللون الأحمر حضورك بها ضعيف — يُرجى الانتظام</span>
+            <button class="toast-close" onclick="document.getElementById('attendanceToast').style.display='none'">✕</button>
+        </div>
+    {% endif %}
+
+    {% if lectures_data %}
         <div class="student-lectures">
-            {% for lecture in lectures %}
-                <a href="{% url 'student_lecture' lecture.id %}" class="student-lecture-btn">
-                    {{ lecture.name }}
+            {% for item in lectures_data %}
+                <a href="{% url 'student_lecture' item.lecture.id %}"
+                   class="student-lecture-btn {% if item.warn %}lecture-danger{% endif %}">
+                    {{ item.lecture.name }}
+                    {% if item.warn %}
+                        <span class="warn-badge">{{ item.percentage }}%</span>
+                    {% endif %}
                 </a>
             {% endfor %}
         </div>
@@ -31,5 +43,16 @@
         <p class="no-lectures">لا توجد محاضرات اليوم</p>
     {% endif %}
 </div>
+
+<script>
+    setTimeout(() => {
+        const toast = document.getElementById('attendanceToast');
+        if (toast) {
+            toast.style.transition = 'opacity 0.5s ease';
+            toast.style.opacity = '0';
+            setTimeout(() => toast.style.display = 'none', 500);
+        }
+    }, 5000);
+</script>
 
 {% endblock %}

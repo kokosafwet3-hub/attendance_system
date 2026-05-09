@@ -245,8 +245,37 @@ def student_home(request):
         date=today
     )
 
+    lectures_data = []
+    has_warning = False
+
+    for lecture in lectures:
+        total_lectures = Lecture.objects.filter(
+            name=lecture.name,
+            level=student.level
+        ).count()
+
+        present_count = Attendance.objects.filter(
+            student=student,
+            lecture__name=lecture.name,
+            lecture__level=student.level,
+            status='present'
+        ).count()
+
+        percentage = (present_count / total_lectures * 100) if total_lectures > 0 else 100
+        warn = total_lectures >= 5 and percentage < 50
+
+        if warn:
+            has_warning = True
+
+        lectures_data.append({
+            'lecture': lecture,
+            'warn': warn,
+            'percentage': round(percentage, 1),
+        })
+
     return render(request, 'main/student_home.html', {
-        'lectures': lectures
+        'lectures_data': lectures_data,
+        'has_warning': has_warning,
     })
 
 @login_required
@@ -326,3 +355,6 @@ def select_department(request):
     return render(request, 'main/select_department.html', {
         'departments': departments
     })
+
+def faq_view(request):
+    return render(request, 'main/faq.html')

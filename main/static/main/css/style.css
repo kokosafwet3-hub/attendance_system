@@ -1031,3 +1031,78 @@ body.dashboard {
         top: 24px;
     }
 }
+
+/* ===== FAQ Page ===== */
+.faq-container {
+    max-width: 700px;
+    margin: 30px auto;
+}
+
+.faq-item {
+    margin-bottom: 15px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.faq-question {
+    width: 100%;
+    padding: 15px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    text-align: right;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.faq-question:hover {
+    background: var(--primary-dark);
+}
+
+.faq-answer {
+    padding: 15px;
+    background: var(--surface-2);
+    display: none;
+    text-align: right;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    border-top: 1px solid var(--border);
+}
+
+.btn-faq {
+    background: var(--primary);
+    color: white;
+    padding: 10px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.btn-faq:hover {
+    background: var(--primary-dark);
+    color: white;
+}
+
+/* ===== Danger Lecture ===== */
+.student-lecture-btn.lecture-danger {
+    background: #E11D48 !important;
+    border: 2px solid #be123c !important;
+    color: white !important;
+}
+
+.student-lecture-btn.lecture-danger:hover {
+    background: #be123c !important;
+}
+
+.warn-badge {
+    background: white;
+    color: #E11D48;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-right: 8px;
+}

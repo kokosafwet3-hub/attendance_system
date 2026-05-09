@@ -1,0 +1,111 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+
+{% block header_buttons %}
+<a href="{% url 'login' %}" class="nav-btn">login</a>
+{% endblock %}
+
+
+<div class="faq-container">
+    <h2 style="text-align:center; margin-bottom:25px;"> الأسئلة الشائعة</h2>
+
+    <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+            كيف أسجل حضوري؟ ▼
+        </button>
+        <div class="faq-answer">
+            ادخل على المحاضرة من الصفحة الرئيسية واسكن الـ QR Code.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+            ما هي نسبة الحضور المطلوبة؟ ▼
+        </button>
+        <div class="faq-answer">
+            النسبة المطلوبة 75% على الأقل لكل مادة.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+            ماذا يحدث إذا تجاوزت 5 غيابات؟ ▼
+        </button>
+        <div class="faq-answer">
+         سيظهر تحذير لك بأن نسبة حضورك منخفضة في هذه المادة.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+            هل يمكنني تسجيل الحضور من جهاز آخر؟ ▼
+        </button>
+        <div class="faq-answer">
+            لا، النظام يتحقق من الجهاز وعنوان الـ IP لمنع التلاعب.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+            كيف أعرف محاضراتي اليوم؟ ▼
+        </button>
+        <div class="faq-answer">
+            بعد تسجيل الدخول مباشرةً ستجد قائمة بمحاضرات اليوم في صفحتك الرئيسية.
+        </div>
+    </div>
+    <div class="faq-item">
+    <button class="faq-question" onclick="toggleFaq(this)">
+        ماذا أفعل إذا لم يعمل QR Code معي؟ ▼
+    </button>
+    <div class="faq-answer">
+        تأكد من أن الكاميرا تعمل بشكل صحيح، وأن الإضاءة كافية. إذا استمرت المشكلة تواصل مع الدكتور.
+    </div>
+</div>
+
+<div class="faq-item">
+    <button class="faq-question" onclick="toggleFaq(this)">
+        هل يمكنني تسجيل الحضور بعد انتهاء المحاضرة؟ ▼
+    </button>
+    <div class="faq-answer">
+        لا، يجب تسجيل الحضور أثناء المحاضرة فقط عن طريق QR Code الذي يعرضه الدكتور.
+    </div>
+</div>
+
+<div class="faq-item">
+    <button class="faq-question" onclick="toggleFaq(this)">
+        نسيت كلمة المرور، ماذا أفعل؟ ▼
+    </button>
+    <div class="faq-answer">
+        تواصل مع الأدمن لإعادة تعيين كلمة المرور الخاصة بك.
+    </div>
+</div>
+
+<div class="faq-item">
+    <button class="faq-question" onclick="toggleFaq(this)">
+        لماذا لا أرى محاضرات اليوم؟ ▼
+    </button>
+    <div class="faq-answer">
+        تأكد أنك سجلت دخول بحساب الطالب الصحيح، وأن المحاضرات مضافة من قبل الأدمن لمستواك الدراسي.
+    </div>
+</div>
+
+<div class="faq-item">
+    <button class="faq-question" onclick="toggleFaq(this)">
+        من أتواصل معه في حالة وجود مشكلة؟ ▼
+    </button>
+    <div class="faq-answer">
+        تواصل مع مسؤول النظام (Admin) عبر إدارة الكلية.
+    </div>
+</div>
+</div>
+
+
+<script>
+function toggleFaq(btn) {
+    const answer = btn.nextElementSibling;
+    answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+}
+</script>
+
+{% endblock %}

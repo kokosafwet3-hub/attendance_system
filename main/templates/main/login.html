@@ -6,7 +6,6 @@
 
 <div class="login-wrapper">
     
-
     {% if messages %}
         {% for message in messages %}
             <div class="error">{{ message }}</div>
@@ -60,6 +59,11 @@
         </div>
     </form>
 
+</div>
+
+<!-- زر الأسئلة الشائعة ثابت أسفل اليمين -->
+<div style="position: fixed; bottom: 20px; right: 20px;">
+    <a href="{% url 'faq' %}" class="btn-faq"> الأسئلة الشائعة</a>
 </div>
 
 <script>
